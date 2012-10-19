@@ -1,3 +1,5 @@
 eggs
 milk
+bread
+cheese
 
