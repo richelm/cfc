@@ -1,0 +1,463 @@
+<html>
+<head>
+<title>CVS Notes</title>
+<link rel="stylesheet" type="text/css" href="./css/vcs.css" />
+</head>
+
+<body>
+<h2>CVS Notes</h2>
+<p>
+These are some notes to help you get started using CVS. Both command line syntax and Eclipse commands are shown.  Refer to the <a href="#resources">resources</a> section below for additional information about CVS.<br />
+<pre class="cvs">Command line syntax is shown in color area like this.</pre>
+
+<pre class="ecvs">Eclipse commands are shown in color area like this.</pre>
+</p>
+<p>
+<h3>Using Commandline CVS</h3>
+If you use commandline CVS on a unix environment (Linux or Mac OS X), then you can use a local directory as a CVS repository. 
+These notes were created using version 1.11.20 of CVS on Mac OS X.  To work through the example with commandlind CVS:
+
+<ul>
+<li>Install a CVS client on your local computer.</li>
+
+<li>Create a directory for your CVS repository on your local computer
+<pre class="cvs">
+cd /Users/richs
+mkdir cvsroot
+</pre>
+</li>
+
+<li>Set environmental variable CVSROOT to point to your directory.
+<pre class="cvs">
+export CVSROOT=/Users/richs/cvsroot  (change for your shell preference)
+</pre>
+</li>
+
+<li>Initialize the CVS repository.
+<pre class="cvs">
+cvs init
+</pre>
+</li>
+
+</p>
+</ul>
+
+<h3>Using Eclipse</h3>
+It is assumed that you know how to install and use Eclipse.  These notes were created using Eclipse Java EE IDE for Web Developers, Version: 1.2.1.20090918-0703, Build id: 20090920-1017 running on Ubuntu Linux.
+<br /><hr />
+
+<h3>Example Project</h3>
+
+<p>
+<table border="1" cellpadding="3" cellspacing="0">
+<tr><td></td><td colspan="6"><strong>myproj</strong></td>
+<tr valign="CENTER">
+<td align="RIGHT"><pre>files ==></pre></td>
+<th colspan="2">colors.txt</th><th colspan="2">food.txt</th><th colspan="2">cars</th></tr>
+<tr valign="BOTTOM">
+<td align="CENTER"><pre> steps </pre></td>
+<th>revision</th>
+<th>file<br />contents</th>
+<th>revision</th>
+<th>file<br />contents</th>
+<th>revision</th>
+<th>file<br />contents</th>
+
+<tr valign="TOP">
+<td>Create project</td>
+<td></td>
+<td><pre>
+red
+green
+</pre></td>
+<td></td>
+<td><pre>
+eggs
+milk
+</pre></td>
+<td colspan="2">&nbsp;</td>
+</tr>
+
+<tr valign="TOP">
+<td>Import into CVS
+<pre class="cvs">
+cd myproj
+cvs import -m "Imported myproj sources" myproj hit start
+</pre>
+<pre class="ecvs">
+From the project context menu choose Team->Share Project...
+Fill in the location information identifying our hitrepo1 repository
+When prompted for module name enter in the form: 
+  test/YOUR_NAME/PROJECT_NAME (eg. test/shawn/myproj)
+Enter a comment for the commit action
+"Imported myproj sources"
+</pre>
+</td>
+<td>1.1</td>
+<td><pre>
+red
+green
+</pre></td>
+<td>1.1</td>
+<td><pre>
+eggs
+milk
+</pre></td>
+<td colspan="2">&nbsp;</td>
+</tr>
+
+<tr valign="TOP">
+<td>Modify colors.txt and food.txt
+<pre class="cvs">
+ cvs commit -m "Added white" colors.txt
+ cvs commit -m "Added bread and cheese" food.txt
+</pre>
+<pre class="ecvs">
+From file colors.txt context menu select TEAM->Commit...
+From file food.txt context menu select TEAM->Commit...
+Add comments same as above for each file.
+</pre>
+</td>
+<td><emphasis class="r1">1.2</emphasis></td>
+<td><pre>
+red
+green
+white
+</pre></td>
+<td>1.2</td>
+<td><pre>
+eggs
+milk
+bread
+cheese
+</pre></td>
+<td colspan="2">&nbsp;</td>
+</tr>
+
+<tr valign="TOP">
+<td>Modify food.txt
+<pre class="cvs">
+cvs commit -m "Added juice" food  
+</pre>
+<pre class="ecvs">
+From file food.txt context menu select TEAM->Commit...
+</td>
+<td colspan="2">&nbsp;</td>
+<td><emphasis class="r1">1.3</emphasis></td>
+<td><pre>
+eggs
+milk
+bread
+cheese
+juice
+</pre></td>
+<td colspan="2">&nbsp;</td>
+</tr>
+
+<tr valign="TOP">
+<td>Tag colors.txt 1.2 and food.txt 1.3 as <emphasis class="r1">rel_1_1</emphasis> (release 1.1).
+<pre class="cvs">
+cvs tag rel_1_1
+</pre>
+<pre class="ecvs">
+Project context menu TEAM->Tag as Version...
+Enter tag name rel_1_1 and click OK
+</pre>
+Active development continues.
+</td>
+<td colspan="6">&nbsp;</td>
+</tr>
+
+<tr valign="TOP">
+<td>Modify colors.txt and food.txt
+<pre class="cvs">
+ cvs commit -m "Added orange" colors.txt  
+ cvs commit -m "Added carrots. Removed bread." food.txt
+</pre>
+<pre class="ecvs">
+From file colors.txt context menu select TEAM->Commit...
+From file food.txt context menu select TEAM->Commit...
+Add comments for each file as noted above.
+</pre>
+</td>
+<td>1.3</td>
+<td><pre>
+red
+green
+white
+orange
+</pre></td>
+<td>1.4</td>
+<td><pre>
+eggs
+milk
+cheese
+juice
+carrots
+</pre></td>
+<td colspan="2">&nbsp;</td>
+</tr>
+
+<tr valign="TOP">
+<td>Create file cars and add to repository.
+<pre class="cvs">
+cvs add cars.txt
+cvs commit cars.txt
+</pre>
+<pre class="ecvs">
+From file cars.txt context menu select TEAM->Commit...
+  *NOTE* This will add and commit to respository
+</pre>
+</td>
+<td colspan="4">&nbsp;</td>
+<td>1.1</td>
+<td><pre>
+Honda
+Ford
+Chevy
+</pre></td>
+</tr>
+
+<tr valign="TOP">
+<td>Modify cars.
+<pre class="cvs">
+cvs commit -m "Changed Chevy to Chevrolet" cars.txt
+</pre>
+<pre class="ecvs">
+From file cars.txt context menu select TEAM->Commit...
+Add comment as above
+</pre>
+</td>
+<td colspan="4">&nbsp;</td>
+<td>1.2</td>
+<td><pre>
+Honda
+Ford
+Chevrolet
+</pre></td>
+</tr>
+
+<tr valign="TOP">
+<td>User reports that the color blue is missing in release 1.1 and we<br />
+cannot make this bug fix to the current active development. Project<br />
+is in a state of flux and not ready for release for several weeks.</td>
+<td colspan="6">&nbsp;</td>
+</tr>
+
+<tr valign="TOP">
+<td>Create a branch rooted at the revisions that correspond to<br />
+release tag rel_1_1. This will be tagged as <emphasis class="r2">rel_1_2</emphasis> (release 1.2).
+<pre class="cvs">
+cvs rtag -b -r rel_1_1 rel_1_2 myproj
+</pre>
+<pre class="ecvs">
+No corresponding Eclipse command at this step.
+</pre>
+</td>
+<td colspan="6">&nbsp;</td>
+</tr>
+
+<tr valign="TOP">
+<td>
+Update our working copy to the branch we created, so we can<br />
+fix the bug.
+<pre class="cvs">
+cd myproj
+cvs update -r rel_1_2
+</pre>
+<pre class="ecvs">
+From project context menu select TEAM->Switch to Another Branch or Version...
+Use Select the tag from the following list
+Select version rel_1_1 under Versions
+Click Finish
+</pre>
+<pre class="ecvs">
+From project context menu select TEAM->Branch...
+Enter Branch Name rel_1_2
+</pre>
+</td>
+<td>1.2</td>
+<td><pre>
+red
+green
+white
+</pre></td>
+<td><emphasis class="r2">1.3</emphasis></td>
+<td><pre>
+eggs
+milk
+bread
+cheese
+juice
+</pre></td>
+<td colspan="2">&nbsp;</td>
+</tr>
+
+<tr valign="TOP">
+<td>Fix bug in colors.txt file.
+<pre class="cvs">
+cvs commit -m "Bug fix.  Added blue to colors." colors.txt
+</pre>
+Deploy release 1.2 into production.
+</td>
+<td><emphasis class="r2">1.2.2.1</emphasis></td>
+<td><pre>
+red
+green
+white
+blue
+</pre></td>
+<td colspan="4">&nbsp;</td>
+</tr>
+
+<tr valign="TOP">
+<td>Get back to development branch (head).
+<pre class="cvs">
+rm -R myproj
+cvs checkout myproj
+</pre>
+<pre class="ecvs">
+From project context menu select TEAM->Switch to Another Branch or Version...
+Use Select the tag from the following list
+Select HEAD
+Click Finish
+</pre>
+</td>
+<td>1.3</td>
+<td><pre>
+red
+green
+white
+orange
+</pre></td>
+<td>1.4</td>
+<td><pre>
+eggs
+milk
+cheese
+juice
+carrots
+</pre></td>
+<td>1.2</td>
+<td><pre>
+Honda
+Ford
+Chevrolet
+</pre></td>
+</tr>
+
+<tr valign="TOP">
+<td>Merge the bug fix into active development.
+<pre class="cvs">
+cvs update -j rel_1_2 colors.txt
+
+RCS file: /Users/richs/cvsroot/myproj/colors.txt,v
+retrieving revision 1.2
+retrieving revision 1.2.2.1
+Merging differences between 1.2 and 1.2.2.1 into colors.txt
+rcsmerge: warning: conflicts during merge
+
+</pre>
+<pre class="ecvs">
+From project context menu select TEAM->Merge...
+In Branch or version to be merged (end tag) Browse to select rel_1_2
+Select Perform merge into the local workspace
+Click Finish
+</pre>
+</td>
+<td>1.2.2.1</td>
+<td><pre>
+red
+green
+white
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; colors
+orange
+=======
+blue
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; 1.2.2.1
+</pre></td>
+<td colspan="4">&nbsp;</td>
+</tr>
+
+<tr valign="TOP">
+<td>Resolve the conflicts in colors.txt
+<pre class="cvs">
+cvs commit -m "Merged bug fix from release 1.2" colors.txt
+</pre>
+<pre class="ecvs">
+From file colors.txt context menu select TEAM->Commit...
+Add comment as above
+</pre>
+</td>
+<td>1.4</td>
+<td><pre>
+red
+green
+white
+orange
+blue
+</pre></td>
+<td colspan="4">&nbsp;</td>
+</tr>
+
+<tr valign="TOP">
+<td>Create a CVS log of everything we have done so far.
+<pre class="cvs">
+cvs log
+</pre>
+<pre class="ecvs">
+Did not yet find a corresponding Eclipse command.  Any ideas?
+</pre>
+Output of cvs log is <a href="myproj_cvslog.html">here</a>
+</td>
+<td colspan="6">&nbsp;</td>
+</tr>
+
+<!--
+<tr valign="TOP">
+<td>
+<pre class="cvs">
+
+</pre>
+</td>
+<td></td>
+<td><pre>
+
+</pre></td>
+<td></td>
+<td><pre>
+</pre></td>
+<td></td>
+<td><pre>
+</pre></td>
+</tr>
+-->
+
+</table>
+</p>
+
+<!-- end of example -->
+
+
+<a name="resources" />
+<h3>Resources</h3>
+<p>
+CVS <a href="http://www.nongnu.org/cvs/">http://www.nongnu.org/cvs/</a><br />
+CVS manual <a href="http://ximbiot.com/cvs/manual/">http://ximbiot.com/cvs/manual/</a><br />
+Open Source Development with CVS<a href="http://cvsbook.red-bean.com/">http://cvsbook.red-bean.com/</a><br />
+TortoiseCVS <a href="http://www.tortoisecvs.org/">http://www.tortoisecvs.org/</a><br />
+Eclipse Platform CVS Support<a href="http://www.eclipse.org/eclipse/platform-cvs/">http://www.eclipse.org/eclipse/platform-cvs/</a><br />
+Eclipse CVS FAQ <a href="http://wiki.eclipse.org/index.php/CVS_FAQ">http://wiki.eclipse.org/index.php/CVS_FAQ</a><br />
+ <a href=""></a><br />
+ <a href=""></a><br />
+</p>
+<hr />
+&copy 2009<br />
+Michigan State University<br />
+Health Information Technology
+<hr />
+Shawn Rich <a href="shawn.rich@hc.msu.edu">shawn.rich@hc.msu.edu</a><br />
+2009.10.22
+</body>
+
+</html>

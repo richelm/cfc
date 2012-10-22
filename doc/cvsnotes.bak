@@ -1,0 +1,441 @@
+<html>
+<head>
+<title>CVS Notes</title>
+<style>
+pre.cvs
+{
+        margin-left: 0.25cm;
+        margin-right: 0.25cm;
+        padding: 0.2cm;
+        background: #FFFFCC;
+}
+
+emphasis.r1
+{
+	background: #00FF00;
+}
+
+emphasis.r2
+{
+	background: #FFFF00;
+}
+</style>
+</head>
+
+<body>
+<h2>CVS Notes</h2>
+<p>
+These are some notes to help you get started using CVS. Command line cvs is used to make things simple and easier to understand the concepts.  These notes use a local directory as a CVS repository. A real repository should be on a file server. See <a href="#resources">resources</a> for additional information about using CVS. 
+</p>
+<p>
+These notes were created using version 1.11.20 of CVS on Mac OS X.  To work through the example:
+
+<ul>
+<li>Install a CVS client on your local computer.</li>
+
+<li>Create a directory for your CVS repository on your local computer
+<pre class="cvs">
+cd /Users/richs
+mkdir cvsroot
+</pre>
+</li>
+
+<li>Set environmental variable CVSROOT to point to your directory.
+<pre class="cvs">
+export CVSROOT=/Users/richs/cvsroot  (change for your shell preference)
+</pre>
+</li>
+
+<li>Initialize the CVS repository.
+<pre class="cvs">
+cvs init
+</pre>
+</li>
+
+<li><h3>Example Project</h3>
+
+<p>
+<table border="1" cellpadding="3" cellspacing="0">
+<tr><td></td><td colspan="6"><strong>myproj</strong></td>
+<tr valign="CENTER">
+<td align="RIGHT"><pre>files ==></pre></td>
+<th colspan="2">colors</th><th colspan="2">food</th><th colspan="2">cars</th></tr>
+<tr valign="BOTTOM">
+<td align="CENTER"><pre> steps </pre></td>
+<th>revision</th>
+<th>file<br />contents</th>
+<th>revision</th>
+<th>file<br />contents</th>
+<th>revision</th>
+<th>file<br />contents</th>
+
+<tr valign="TOP">
+<td>Create project</td>
+<td></td>
+<td><pre>
+red
+green
+</pre></td>
+<td></td>
+<td><pre>
+eggs
+milk
+</pre></td>
+<td></td>
+<td></td>
+</tr>
+
+<tr valign="TOP">
+<td>Import into CVS
+<pre class="cvs">
+cd myproj
+cvs import -m "Imported myproj sources" myproj hit start
+</pre>
+</td>
+<td>1.1</td>
+<td><pre>
+red
+green
+</pre></td>
+<td>1.1</td>
+<td><pre>
+eggs
+milk
+</pre></td>
+<td></td>
+<td></td>
+</tr>
+
+<tr valign="TOP">
+<td>Modify colors and food
+<pre class="cvs">
+ cvs commit -m "Added white" colors
+ cvs commit -m "Added bread and cheese" food
+</pre>
+</td>
+<td><emphasis class="r1">1.2</emphasis></td>
+<td><pre>
+red
+green
+white
+</pre></td>
+<td>1.2</td>
+<td><pre>
+eggs
+milk
+bread
+cheese
+</pre></td>
+<td></td>
+<td><pre>
+</pre></td>
+</tr>
+
+<tr valign="TOP">
+<td>Modify food
+<pre class="cvs">
+ cvs commit -m "Added juice" food  
+</pre></td>
+<td></td>
+<td></td>
+<td><emphasis class="r1">1.3</emphasis></td>
+<td><pre>
+eggs
+milk
+bread
+cheese
+juice
+</pre></td>
+<td></td>
+<td><pre>
+</pre></td>
+</tr>
+
+<tr valign="TOP">
+<td>Tag colors 1.2 and food 1.3 as <emphasis class="r1">rel_1_1</emphasis> (release 1.1).
+<pre class="cvs">
+cvs tag rel_1_1
+</pre>
+Active development continues.
+</td>
+<td colspan="6"></td>
+</tr>
+
+<tr valign="TOP">
+<td>Modify colors and food
+<pre class="cvs">
+ cvs commit -m "Added orange" colors  
+ cvs commit -m "Added carrots. Removed bread." food  
+</pre></td>
+<td>1.3</td>
+<td><pre>
+red
+green
+white
+orange
+</pre></td>
+<td>1.4</td>
+<td><pre>
+eggs
+milk
+cheese
+juice
+carrots
+</pre></td>
+<td></td>
+<td><pre>
+</pre></td>
+</tr>
+
+<tr valign="TOP">
+<td>Create file cars and add to repository.
+<pre class="cvs">
+cvs add cars
+cvs commit cars
+</pre>
+</td>
+<td></td>
+<td><pre>
+</pre></td>
+<td></td>
+<td><pre>
+</pre></td>
+<td>1.1</td>
+<td><pre>
+Honda
+Ford
+Chevy
+</pre></td>
+</tr>
+
+<tr valign="TOP">
+<td>Modify cars.
+<pre class="cvs">
+cvs commit -m "Changed Chevy to Chevrolet" cars
+</pre>
+</td>
+<td></td>
+<td><pre>
+</pre></td>
+<td></td>
+<td><pre>
+</pre></td>
+<td>1.2</td>
+<td><pre>
+Honda
+Ford
+Chevrolet
+</pre></td>
+</tr>
+
+<tr valign="TOP">
+<td>User reports that the color blue is missing in release 1.1 and we<br />
+cannot make this bug fix to the current active development. Project<br />
+is in a state of flux and not ready for release for several weeks.</td>
+<td colspan="6"></td>
+</tr>
+
+<tr valign="TOP">
+<td>Create a branch rooted at the revisions that correspond to<br />
+release tag rel_1_1. This will be tagged as <emphasis class="r2">rel_1_2</emphasis> (release 1.2).
+<pre class="cvs">
+cvs rtag -b -r rel_1_1 rel_1_2 myproj
+</pre>
+</td>
+<td colspan="6"></td>
+</tr>
+
+<tr valign="TOP">
+<td>
+Update our working copy to the branch we created, so we can<br />
+fix the bug.
+<pre class="cvs">
+cd myproj
+cvs update -r rel_1_2
+</pre>
+</td>
+<td>1.2</td>
+<td><pre>
+red
+green
+white
+</pre></td>
+<td><emphasis class="r2">1.3</emphasis></td>
+<td><pre>
+eggs
+milk
+bread
+cheese
+juice
+</pre></td>
+<td></td>
+<td><pre>
+</pre></td>
+</tr>
+
+<tr valign="TOP">
+<td>Fix bug in colors file.
+<pre class="cvs">
+cvs commit -m "Bug fix.  Added blue to colors." colors
+</pre>
+Deploy release 1.2 into production.
+</td>
+<td><emphasis class="r2">1.2.2.1</emphasis></td>
+<td><pre>
+red
+green
+white
+blue
+</pre></td>
+<td></td>
+<td><pre>
+</pre></td>
+<td></td>
+<td><pre>
+</pre></td>
+</tr>
+
+<tr valign="TOP">
+<td>Remove the working copy of the branch (release 1.2) and<br />
+checkout the active development.
+<pre class="cvs">
+rm -R myproj
+cvs checkout myproj
+</pre>
+</td>
+<td>1.3</td>
+<td><pre>
+red
+green
+white
+orange
+</pre></td>
+<td>1.4</td>
+<td><pre>
+eggs
+milk
+cheese
+juice
+carrots
+</pre></td>
+<td>1.2</td>
+<td><pre>
+Honda
+Ford
+Chevrolet
+</pre></td>
+</tr>
+
+<tr valign="TOP">
+<td>Merge the bug fix into active development.
+<pre class="cvs">
+cvs update -j rel_1_2 colors
+
+RCS file: /Users/richs/cvsroot/myproj/colors,v
+retrieving revision 1.2
+retrieving revision 1.2.2.1
+Merging differences between 1.2 and 1.2.2.1 into colors
+rcsmerge: warning: conflicts during merge
+
+</pre>
+</td>
+<td>1.2.2.1</td>
+<td><pre>
+red
+green
+white
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; colors
+orange
+=======
+blue
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; 1.2.2.1
+</pre></td>
+<td></td>
+<td><pre>
+</pre></td>
+<td></td>
+<td><pre>
+</pre></td>
+</tr>
+
+<tr valign="TOP">
+<td>Resolve the conflicts in colors.
+<pre class="cvs">
+cvs commit -m "Merged bug fix from release 1.2" colors
+</pre>
+</td>
+<td>1.4</td>
+<td><pre>
+red
+green
+white
+orange
+blue
+</pre></td>
+<td></td>
+<td><pre>
+</pre></td>
+<td></td>
+<td><pre>
+</pre></td>
+</tr>
+
+<tr valign="TOP">
+<td>Create a CVS log of everything we have done so far.
+<pre class="cvs">
+cvs log
+</pre>
+Output of cvs log is <a href="myproj_cvslog.html">here</a>
+</td>
+<td colspan="6"></td>
+</tr>
+
+<!--
+<tr valign="TOP">
+<td>
+<pre class="cvs">
+
+</pre>
+</td>
+<td></td>
+<td><pre>
+
+</pre></td>
+<td></td>
+<td><pre>
+</pre></td>
+<td></td>
+<td><pre>
+</pre></td>
+</tr>
+-->
+
+</table>
+</p>
+
+<!-- end of example -->
+</li>
+</ul>
+
+<a name="resources" />
+<h3>Resources</h3>
+<p>
+CVS <a href="http://www.nongnu.org/cvs/">http://www.nongnu.org/cvs/</a><br />
+CVS manual <a href="http://ximbiot.com/cvs/manual/">http://ximbiot.com/cvs/manual/</a><br />
+Open Source Development with CVS<a href="http://cvsbook.red-bean.com/">http://cvsbook.red-bean.com/</a><br />
+TortoiseCVS <a href="http://www.tortoisecvs.org/">http://www.tortoisecvs.org/</a><br />
+Eclipse Platform CVS Support<a href="http://www.eclipse.org/eclipse/platform-cvs/">http://www.eclipse.org/eclipse/platform-cvs/</a><br />
+Eclipse CVS FAQ <a href="http://wiki.eclipse.org/index.php/CVS_FAQ">http://wiki.eclipse.org/index.php/CVS_FAQ</a><br />
+ <a href=""></a><br />
+ <a href=""></a><br />
+</p>
+<hr />
+&copy 2009<br />
+Michigan State University<br />
+Health Information Technology
+<hr />
+Shawn Rich <a href="shawn.rich@hc.msu.edu">shawn.rich@hc.msu.edu</a><br />
+2009.09.26
+</body>
+
+</html>

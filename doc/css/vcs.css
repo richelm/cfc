@@ -1,0 +1,25 @@
+pre.cvs
+{
+        margin-left: 0.25cm;
+        margin-right: 0.25cm;
+        padding: 0.2cm;
+        background: #FFFFCC;
+}
+
+pre.ecvs
+{
+        margin-left: 0.25cm;
+        margin-right: 0.25cm;
+        padding: 0.2cm;
+        background: #CCFFCC;
+}
+
+emphasis.r1
+{
+	background: #00FF00;
+}
+
+emphasis.r2
+{
+	background: #FFFF00;
+}
